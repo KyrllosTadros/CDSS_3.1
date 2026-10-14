@@ -55,23 +55,25 @@ def cf_matrix(p, o, and_print=True):
 
 def main():
     # 1. Lees het CSV-bestand in
-    
-    print("Huidige werkmap:", os.getcwd())
-print("Bestanden in deze map:", os.listdir())
-    
+        
     df = pd.read_csv(("NKR_IKNL_breast_syntheticdata.csv"), sep=";")
-    print(df.describe())
-    print(df.shape)
+    #print(df.describe())
+    #print(df.shape)
 
     # 2. rarget kolom aanmaken (pm, met fallback naar cm) vóór data cleaning
     df['uitkomst'] = df['pm'].combine_first(df['cm'])
     # Verwijder rijen waar de target onbekend is
     df = df.dropna(subset=['uitkomst'])
     df['uitkomst'] = df['uitkomst'].astype(int)
+    print("HIERRRR")
+    # print de hoogste waarde vab de target kolom
+    print("Max waarde van de target kolom:", df['uitkomst'].max())
+
 
     # verwijder topo want overal gelijk
     df = df.drop(columns=['topo'])
     df = df.drop(columns=['key_nkr', 'key_eid'])
+    df = df.drop(columns=['pm', 'cm'])  # verwijder pm en cm kolommen, want we hebben nu de target kolom
 
     #3. missende waarden vervangen door NaN
     ## Verander 9 bij diffgrad naar nan
@@ -109,12 +111,12 @@ print("Bestanden in deze map:", os.listdir())
     #3. Percentage missing values per kolom berekenen
     ## Bekijk welke variabelen ergens een NaN waarde hebben
     missing_vars = df.columns[df.isna().any()].tolist()
-    print(f"Variabelen met missings: {missing_vars}")
+    #print(f"Variabelen met missings: {missing_vars}")
 
     ## Bekijk percentages missings voor elke variabele
     missing_percentages = (df.isna().mean() * 100)
-    print("\nPercentages missings per variabele:")
-    print(missing_percentages)
+    #print("\nPercentages missings per variabele:")
+    #print(missing_percentages)
 
     ## Variabelen met meer dan 25% missings
     missing_25 = missing_percentages[missing_percentages > 25].index
@@ -129,8 +131,8 @@ print("Bestanden in deze map:", os.listdir())
 
     ## Bekijk percentages missings voor elke variabele
     missing_percentages = (df.isna().mean() * 100)
-    print("\nPercentages missings per variabele:")
-    print(missing_percentages)
+    #print("\nPercentages missings per variabele:")
+    #print(missing_percentages)
 
     # 5. Categorische variabelen one-hot-encoden
     ## Lijst met alle kolommen die we willen one-hot-encoden
@@ -170,16 +172,16 @@ print("Bestanden in deze map:", os.listdir())
     ]
 
     df = maak_dummies(df, kolommen=categorische_kolommen, drop_first=True)
-    print("Aantal kolommen na one-hot encoding:", df.shape[1])
-    print(df.head())
+    #print("Aantal kolommen na one-hot encoding:", df.shape[1])
+    #print(df.head())
 
     # 6. Normaliseer de numerieke kolommen
     numeric_columns = df.select_dtypes(include=[np.number]).columns
     df[numeric_columns] = df[numeric_columns].apply(normalize)
-    print("\nData na normalisatie:")
-    print(df.head())
+    #print("\nData na normalisatie:")
+    #print(df.head())
 
-    print("HIER", df.dtypes)
+    #print("HIER", df.dtypes)
 
     # 7. Train-test split (2/3 voor training, 1/3 voor testen)
     np.random.seed(42)
@@ -194,7 +196,7 @@ print("Bestanden in deze map:", os.listdir())
 
     ## Bereken de a priori kans op overlijden in deze dataset.
     apriori = df['uitkomst'].mean()
-    print(f"A-priori kans op metastasen op afstand: {apriori:.3f}")
+    #print(f"A-priori kans op metastasen op afstand: {apriori:.3f}")
 
     # 8. Train model
     nn = MLPClassifier(hidden_layer_sizes=300, max_iter=1000, random_state=42)
