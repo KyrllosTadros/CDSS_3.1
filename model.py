@@ -55,6 +55,10 @@ def cf_matrix(p, o, and_print=True):
 
 def main():
     # 1. Lees het CSV-bestand in
+    
+    print("Huidige werkmap:", os.getcwd())
+print("Bestanden in deze map:", os.listdir())
+    
     df = pd.read_csv(("NKR_IKNL_breast_syntheticdata.csv"), sep=";")
     print(df.describe())
     print(df.shape)
