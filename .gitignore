@@ -182,3 +182,7 @@ cython_debug/
 
 #negeer alle csv bestanden
 *.csv
+
+# Lokale getrainde modellen
+*.joblib
+*.keras
