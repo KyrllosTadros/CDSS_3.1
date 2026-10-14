@@ -54,12 +54,8 @@ def cf_matrix(p, o, and_print=True):
     return AC
 
 def main():
-    # Volledig pad naar de map en het CSV-bestand
-    pad = r"C:\Users\Gebruiker\data VEILIG"
-    bestandspad = os.path.join(pad, "NKR_IKNL_breast_syntheticdata.csv")
-
     # 1. Lees het CSV-bestand in
-    df = pd.read_csv(bestandspad, sep=";")
+    df = pd.read_csv(("NKR_IKNL_breast_syntheticdata.csv"), sep=";")
     print(df.describe())
     print(df.shape)
 
