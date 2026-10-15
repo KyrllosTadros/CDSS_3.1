@@ -1,30 +1,34 @@
-"""Load the locally trained scikit-learn model and predict metastasis."""
+"""Load the three survival models and predict their outcomes."""
 from pathlib import Path
 
 import joblib
 import pandas as pd
 
-MODEL_FILE = Path(__file__).resolve().parent / "model.joblib"
+MODEL_FILE = Path(__file__).resolve().parent / "survival_models.joblib"
 
 
 def load_model_bundle():
     if not MODEL_FILE.exists():
-        raise FileNotFoundError("model.joblib ontbreekt. Train eerst met: python train_model.py")
-    return joblib.load(MODEL_FILE)
+        raise FileNotFoundError(
+            "survival_models.joblib ontbreekt. Train de drie modellen met: python train_model.py"
+        )
+    bundle = joblib.load(MODEL_FILE)
+    if not all(years in bundle.get("models", {}) for years in (1, 5, 10)):
+        raise ValueError("Het modelbestand bevat niet alle drie uitkomsten (1, 5 en 10 jaar).")
+    return bundle
 
 
-def predict_one(bundle, values):
+def predict_all(bundle, values):
     schema = bundle["schema"]
     row = pd.DataFrame(
         [{column: values.get(column) for column in schema["columns"]}],
         columns=schema["columns"],
     )
-    model = bundle["model"]
-    label = int(model.predict(row)[0])
-    probability = None
-    if hasattr(model, "predict_proba"):
-        probabilities = model.predict_proba(row)[0]
+    results = {}
+    for years, model in bundle["models"].items():
         classes = list(model.classes_)
-        if 1 in classes:
-            probability = float(probabilities[classes.index(1)])
-    return label, probability
+        if 1 not in classes:
+            raise ValueError(f"Model voor {years} jaar kent geen overlevingsklasse.")
+        probability = float(model.predict_proba(row)[0][classes.index(1)])
+        results[int(years)] = {"survival_probability": probability, "survives": probability >= 0.5}
+    return results

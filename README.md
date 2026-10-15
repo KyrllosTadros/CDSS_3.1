@@ -1,28 +1,23 @@
-# Borstkankermodel voor metastasen
+# Borstkankermodel voor overleving
 
-Deze Streamlit-app gebruikt een scikit-learn `MLPClassifier`. De dataset wordt lokaal gelezen uit `NKR_IKNL_breast_syntheticdata.csv`. CSV-bestanden en het getrainde model zijn uitgesloten van Git.
+Deze lokale Streamlit-app toont drie afzonderlijke modeluitkomsten: overleving na 1, 5 en 10 jaar. De modellen worden getraind op `NKR_IKNL_breast_syntheticdata.csv`.
 
-## Eenmalige installatie
+## Installeren en starten
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-```
-
-## Trainen en starten
-
-Voer vanuit deze projectmap uit:
-
-```bash
 python train_model.py
-streamlit run app.py
+python -m streamlit run app.py
 ```
 
-Het trainingsscript maakt lokaal `model.joblib`. De Streamlit-app laadt dit bestand en biedt invoervelden voor de kenmerken. Train opnieuw met `python train_model.py` om het model te vervangen.
+`train_model.py` maakt `survival_models.joblib` met de drie modellen en de invoerschema's. Train opnieuw na wijzigingen aan de dataset of modelcode.
 
-## Modelverwerking
+## Invoer en uitkomst
 
-De target `uitkomst` wordt afgeleid uit `pm`, met `cm` als terugval als `pm` ontbreekt. `pm`, `cm`, `key_nkr`, `key_eid` en `topo` worden niet als modelinvoer gebruikt. Kolommen met meer dan 25% ontbrekende waarden worden weggelaten. Imputatie, schaling en categorische codering worden binnen de trainingspipeline geleerd en bij voorspellen opnieuw toegepast.
+De interface vraagt leeftijd, klinisch stadium, tumorgrootte, positieve lymfeklieren, tumorgraad, ER-, PR- en HER2-status en de codes voor chemo- en hormoontherapie. Dit zijn de belangrijkste beschikbare patiënt-, tumor- en behandelkenmerken in het gebruikte model. Een onbekende waarde kan als zodanig worden gekozen; de trainingspipeline vult die in met een waarde uit de trainingsdata.
 
-Deze app is uitsluitend een technische demonstratie; niet gebruiken voor diagnose of behandelkeuzes. Een modeluitkomst is geen klinisch gevalideerde of gekalibreerde kans.
+Per termijn is klasse 1 gedefinieerd als overleving tot die termijn. Klasse 0 betekent overlijden binnen of op die termijn. Dossiers zonder bekende uitkomst op de betreffende termijn worden voor dat model uitgesloten. De modellen hebben elk een eigen trainingsdoel.
+
+De percentages zijn niet klinisch gevalideerd of gekalibreerd en zijn geen individuele prognose. Gebruik de app niet voor diagnose of behandelkeuzes.
