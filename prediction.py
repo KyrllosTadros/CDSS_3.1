@@ -2,6 +2,7 @@
 from pathlib import Path
 
 import joblib
+import numpy as np
 import pandas as pd
 
 MODEL_FILE = Path(__file__).resolve().parent / "survival_models.joblib"
@@ -20,8 +21,9 @@ def load_model_bundle():
 
 def predict_all(bundle, values):
     schema = bundle["schema"]
+    # Onbekende waarden (None) moeten als NaN binnenkomen, anders worden ze niet geïmputeerd.
     row = pd.DataFrame(
-        [{column: values.get(column) for column in schema["columns"]}],
+        [{column: np.nan if values.get(column) is None else values.get(column) for column in schema["columns"]}],
         columns=schema["columns"],
     )
     results = {}
