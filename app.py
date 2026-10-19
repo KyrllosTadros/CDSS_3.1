@@ -323,73 +323,45 @@ with tab_protocol:
     # ---------------- Beslismoment 1 ----------------
     with st.container(border=True):
         st.markdown("#### 1. Zijn er nieuwe klachten of alarmsignalen?")
-        st.caption(
-            "Vink aan wat tijdens anamnese en lichamelijk onderzoek aanwezig is."
-        )
+        st.caption("Vink aan wat tijdens anamnese en lichamelijk onderzoek aanwezig is.")
         col_k1, col_k2 = st.columns(2)
         with col_k1:
             st.markdown("**Mamma & lokaal gebied**")
-            s_lokaal1 = st.checkbox(
-                "Nieuwe palpabele zwelling in aangedane/contralaterale borst, litteken of oksel",
-                key=f"{k}_s1",
-            )
-            s_lokaal2 = st.checkbox(
-                "Huid- of tepelafwijkingen (intrekking, oedeem/peau d'orange, eczeem, bloederige tepeluitvloed)",
-                key=f"{k}_s2",
-            )
+            s_lokaal1 = st.checkbox("Nieuwe palpabele zwelling in aangedane/contralaterale borst, litteken of oksel", key=f"{k}_s1")
+            s_lokaal2 = st.checkbox("Huid- of tepelafwijkingen (intrekking, oedeem/peau d'orange, eczeem, bloederige tepeluitvloed)", key=f"{k}_s2")
             st.markdown("**Skelet & wervelkolom**")
-            s_bot = st.checkbox(
-                "Nieuwe aanhoudende of progressieve (nachtelijke) rug- of botpijn",
-                key=f"{k}_s3",
-            )
-            s_neuro = st.checkbox(
-                "Neurologische prikkeling/uitval (radiculaire pijn, beenzwakte, ganginstabiliteit)",
-                key=f"{k}_s4",
-            )
+            s_bot = st.checkbox("Nieuwe aanhoudende of progressieve (nachtelijke) rug- of botpijn", key=f"{k}_s3")
+            s_neuro = st.checkbox("Neurologische prikkeling/uitval (radiculaire pijn, beenzwakte, ganginstabiliteit)", key=f"{k}_s4")
         with col_k2:
             st.markdown("**Luchtwegen**")
-            s_long = st.checkbox(
-                "Onverklaarde progressieve dyspneu of aanhoudende droge hoest",
-                key=f"{k}_s5",
-            )
+            s_long = st.checkbox("Onverklaarde progressieve dyspneu of aanhoudende droge hoest", key=f"{k}_s5")
             st.markdown("**Systeem- & medicatiecomplicaties**")
-            s_calcium = st.checkbox(
-                "Sufheid, polydipsie (extreme dorst), polyurie en obstipatie (verdenking hypercalciëmie)",
-                key=f"{k}_s6",
-            )
-            s_tamoxifen = st.checkbox(
-                "Pijnlijk gezwollen onderbeen (DVT) of vaginaal bloedverlies bij tamoxifengebruik",
-                key=f"{k}_s7",
-            )
+            s_calcium = st.checkbox("Sufheid, polydipsie (extreme dorst), polyurie en obstipatie (verdenking hypercalciëmie)", key=f"{k}_s6")
+            s_tamoxifen = st.checkbox("Pijnlijk gezwollen onderbeen (DVT) of vaginaal bloedverlies bij tamoxifengebruik", key=f"{k}_s7")
 
         st.divider()
-        if not any(
-            [s_lokaal1, s_lokaal2, s_bot, s_neuro, s_long, s_calcium, s_tamoxifen]
-        ):
-            toon_advies(
-                "geen",
-                "**Geen alarmsignalen.** Geen directe indicatie voor aanvullende beeldvorming of acute "
-                "tweedelijnsconsultatie. Ga verder met beslismoment 2.",
-            )
+        if not any([s_lokaal1, s_lokaal2, s_bot, s_neuro, s_long, s_calcium, s_tamoxifen]):
+            toon_advies("geen", "**Geen alarmsignalen.** Geen directe indicatie voor aanvullende beeldvorming of acute "
+                                "tweedelijnsconsultatie. Ga verder met beslismoment 2.")
         else:
-            st.markdown(
-                "**Advies: beoordeel de klachten en overleg of verwijs gericht** (hoogste urgentie bovenaan)"
-            )
+            st.markdown("**Advies: beoordeel de klachten en overleg of verwijs gericht** (hoogste urgentie bovenaan)")
             if s_neuro:
                 toon_advies(
                     "spoed",
-                    "**SPOED: verdenking ruggenmergcompressie.** Overleg vandaag nog met de dienstdoende neuroloog en vraag "
-                    "binnen 12 uur een MRI van de gehele wervelkolom aan.",
-                    "- Bij beenzwakte, loopstoornissen of radiculair bandgevoel bestaat verdenking op ruggenmergcompressie (Richtlijn Wervelmetastasen).\n"
-                    "- *Medicamenteus:* start direct dexamethason 10 mg i.v. bolus, gevolgd door 1 dd 16 mg oraal, met maagbescherming (protonpompremmer).",
-                    bronnen=[WERVEL],
+                    "**SPOED: neurologische symptomen passend bij mogelijke wervelmetastasen of ruggenmergcompressie.** "
+                    "Overleg dezelfde dag met de behandelend specialist of dienstdoende neuroloog en verricht met spoed MRI-diagnostiek.",
+                    "- Beenzwakte, ganginstabiliteit, progressieve neurologische uitval of bilaterale radiculaire klachten kunnen wijzen op metastatische epidurale spinale myelumcompressie (MESMC).\n"
+                    "- Bij verdenking op MESMC is volgens de richtlijn beeldvorming binnen 12 uur geïndiceerd.\n"
+                    "- *Medicamenteus:* overweeg dexamethason conform de richtlijn Wervelmetastasen: 10 mg i.v. bolus, gevolgd door 1 dd 8-16 mg oraal. Geef bij risicofactoren tevens een protonpompremmer.",
+                        bronnen=[WERVEL],
                 )
             if s_calcium:
                 toon_advies(
                     "actie",
-                    "**Verdenking hypercalciëmie:** bepaal met spoed serumcalcium (gecorrigeerd voor albumine) en nierfunctie.",
-                    "- Bij gecorrigeerd calcium > 3,0 mmol/l: direct overleggen over intraveneuze rehydratie (NaCl 0,9%) en een "
-                    "bisfosfonaat (zoledroninezuur 4 mg i.v. in 15 minuten). Richtlijn Hypercalciëmie (PZNL).",
+                    "**Verdenking hypercalciëmie:** bepaal met spoed serumcalcium (gecorrigeerd voor albumine) en nierfunctie. Overleg bij verhoogd calcium direct met de behandelend oncoloog/interne geneeskunde.",
+                    "- Denk aan hypercalciëmie bij sufheid, verwardheid, polydipsie, polyurie en obstipatie.\n"
+                    "- Bepaal serumcalcium (of geïoniseerd calcium indien beschikbaar) en nierfunctie.\n"
+                    "- Bij ernstige hypercalciëmie (gecorrigeerd calcium > 3,0 mmol/L) of klinische achteruitgang: overleg dezelfde dag met de tweede lijn over behandeling, waaronder intraveneuze rehydratie en een bisfosfonaat",
                     bronnen=[CALCIUM],
                 )
             if s_tamoxifen:
@@ -397,31 +369,36 @@ with tab_protocol:
                     "actie",
                     "**Complicatie bij tamoxifen:** verwijs bij een dik, pijnlijk been voor echo-doppler (DVT); verwijs bij "
                     "vaginaal bloedverlies naar de gynaecoloog.",
-                    "- Langdurig tamoxifengebruik geeft een verhoogd risico op endometriumcarcinoom (NHG-Standaard Borstkanker).",
+                    "- Langdurig tamoxifengebruik geeft een verhoogd risico op endometriumcarcinoom.",
                     bronnen=[NHG],
                 )
             if s_long:
                 toon_advies(
                     "actie",
                     "**Kortademigheid/hoest:** vraag een X-thorax aan om pleuravocht, een infiltraat of lymphangitis carcinomatosa uit te sluiten.",
-                    "- Bij refractaire dyspneu is de eerste keus systemisch morfine (slow release oraal 2dd 10 mg of 6dd 2,5 mg s.c./i.v.).\n"
-                    "- Zuurstof is pas geïndiceerd bij aangetoonde diffusiestoornissen. Richtlijn Dyspneu.",
+                    "- Bij refractaire dyspneu kan systemische morfine worden toegepast. Bij opioïdnaïeve patiënten is slow release morfine 2dd 10 mg een aanbevolen startdosering conform de richtlijn.\n"
+                    "- Chronisch zuurstofgebruik wordt alleen aanbevolen bij een aangetoonde diffusiestoornis (bijvoorbeeld lymphangitis carcinomatosa of longfibrose); evalueer het effect op de dyspneu.",
                     bronnen=[DYSPNEU],
                 )
+
             if s_bot and not s_neuro:
                 toon_advies(
-                    "actie",
-                    "**Aanhoudende rug-/botpijn:** vraag röntgendiagnostiek aan of overleg met de specialist over een botscan/MRI.",
-                    "- Vermijd langdurige conservatieve fysiotherapie zonder onderliggende diagnostiek.\n"
-                    "- *Pijnbestrijding (Richtlijn Pijn bij kanker):* stap 1 paracetamol 4dd 1000 mg; bij onvoldoende effect "
-                    "laagdrempelig stap 2: sterkwerkend opioïd (morfine of oxycodon), zwakwerkende opioïden overslaan.",
-                    bronnen=[PIJN, WERVEL],
+                "actie",
+                "**Nieuwe of progressieve rug-/botpijn:** overleg laagdrempelig met de behandelend specialist en verricht aanvullende diagnostiek bij verdenking op bot- of wervelmetastasen.",
+                "- Vermijd langdurige conservatieve fysiotherapie zonder onderliggende diagnostiek.\n"
+                "- Bij klinische verdenking op wervelmetastasen heeft MRI van de wervelkolom de voorkeur; de urgentie is afhankelijk van de aanwezigheid van neurologische symptomen.\n"
+                "- Let op alarmsignalen zoals toenemende nachtelijke pijn, pijn bij belasting of bewegen van de wervelkolom en progressieve klachten.\n"
+                "- *Pijnbestrijding conform richtlijn Pijn bij kanker:* start met paracetamol 3 dd 1000 mg, eventueel gecombineerd met een NSAID indien niet gecontra-indiceerd. Bij onvoldoende effect kan opschaling naar een sterkwerkend opioïd worden overwogen conform de oncologische richtlijn.\n"
+                "- Overweeg vroege afstemming met het behandelteam of palliatief team bij complexe pijnklachten.",
+                bronnen=[PIJN, WERVEL],
                 )
+
             if s_lokaal1 or s_lokaal2:
                 toon_advies(
                     "actie",
-                    "**Verdenking lokaal recidief:** verwijs naar de mammapoli voor mammografie en echografie, zo nodig met cytologie/histologie.",
-                    "- Conform NHG-Standaard Borstkanker.",
+                    "**Verdenking (recidief van) mammacarcinoom:** verwijs naar de mammapoli voor verdere diagnostiek wegens verdenking op (recidief van) mammacarcinoom.",
+                    f"- **Geregistreerde bevinding voor verwijsbrief (HIS):** {'palpabele zwelling' if s_lokaal1 and not s_lokaal2 else 'huid-/tepelafwijking' if s_lokaal2 and not s_lokaal1 else 'palpabele zwelling én huid-/tepelafwijking'}.\n"
+                    "- Beleid conform NHG-Standaard Borstkanker.",
                     bronnen=[NHG],
                 )
 
@@ -430,19 +407,13 @@ with tab_protocol:
         st.markdown("#### 2. Is het follow-upplan duidelijk?")
         fu = st.radio(
             "Is er een duidelijk en actueel follow-up- en nazorgplan vastgelegd tussen ziekenhuis en huisarts?",
-            ["Ja", "Nee"],
-            index=None,
-            horizontal=True,
-            key=f"{k}_fu",
+            ["Ja", "Nee"], index=None, horizontal=True, key=f"{k}_fu",
         )
-        st.caption(
-            "Ja: het plan is actueel en de afspraken over beeldvorming en taakverdeling zijn helder. "
-            "Nee: er ontbreekt een recent ontslagbericht of nazorgplan, of het is onduidelijk wie de regie voert."
-        )
+        st.caption("Ja: het plan is actueel en de afspraken over beeldvorming en taakverdeling zijn helder. "
+                   "Nee: er ontbreekt een recent ontslagbericht of nazorgplan, of het is onduidelijk wie de regie voert.")
         if fu == "Ja":
             toon_advies(
-                "info",
-                "**Volg het bestaande follow-upplan.**",
+                "info", "**Volg het bestaande follow-upplan.**",
                 "- **Controleschema:** handhaaf de geplande periodieke controles (mammografie en klinisch borstonderzoek in de 2e lijn).\n"
                 "- **Eerste lijn:** bij > 5 jaar na een borstsparende behandeling en leeftijd > 60 jaar kan de nacontrole naar de huisarts "
                 "(jaarlijkse palpatie, tweejaarlijks mammogram in het ziekenhuis).\n"
@@ -451,8 +422,7 @@ with tab_protocol:
             )
         elif fu == "Nee":
             toon_advies(
-                "actie",
-                "**Overleg met het behandelteam over de follow-up.**",
+                "actie", "**Overleg met het behandelteam over de follow-up.**",
                 "- Neem contact op met de regievoerend medisch specialist of mammacareverpleegkundige.\n"
                 "- Vraag het oncologisch nazorgplan op en leg afspraken over taakverdeling en over wie de periodieke beeldvorming "
                 "aanvraagt vast in het HIS.",
@@ -464,19 +434,13 @@ with tab_protocol:
         st.markdown("#### 3. Is extra ondersteuning nodig?")
         ond = st.radio(
             "Heeft de patiënt behoefte aan extra psychosociale, fysieke of praktische ondersteuning?",
-            ["Ja", "Nee"],
-            index=None,
-            horizontal=True,
-            key=f"{k}_ond",
+            ["Ja", "Nee"], index=None, horizontal=True, key=f"{k}_ond",
         )
-        st.caption(
-            "Denk aan aanhoudende vermoeidheid, somberheid, arm-/schouderklachten of lymfoedeem, vragen over voeding "
-            "of behoefte aan gespreksvoorbereiding."
-        )
+        st.caption("Denk aan aanhoudende vermoeidheid, somberheid, arm-/schouderklachten of lymfoedeem, vragen over voeding "
+                   "of behoefte aan gespreksvoorbereiding.")
         if ond == "Ja":
             toon_advies(
-                "info",
-                "**Bied ondersteuning of verwijs indien nodig.**",
+                "info", "**Bied ondersteuning of verwijs indien nodig.**",
                 "- **Gespreksvoorbereiding:** reik de B-bewust checklist aan van Borstkankervereniging Nederland "
                 "([www.b-bewust.nl](https://www.b-bewust.nl)).\n"
                 "- **Fysiek:** verwijs bij arm-/schouderklachten of lymfoedeem naar een oedeem- of oncologiefysiotherapeut "
@@ -487,8 +451,7 @@ with tab_protocol:
             )
         elif ond == "Nee":
             toon_advies(
-                "info",
-                "**Bespreek beschikbare nazorg en contactmogelijkheden.**",
+                "info", "**Bespreek beschikbare nazorg en contactmogelijkheden.**",
                 "- **Voorlichting:** wijs op betrouwbare informatie via [Thuisarts.nl](https://www.thuisarts.nl/borstkanker) en "
                 "[Kanker.nl](https://www.kanker.nl).\n"
                 "- **Bereikbaarheid:** spreek af bij welke veranderende klachten of toenemende ongerustheid de patiënt laagdrempelig "
