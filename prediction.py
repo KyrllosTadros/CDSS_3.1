@@ -1,4 +1,5 @@
 """Load the three survival models and predict their outcomes."""
+
 from pathlib import Path
 
 import joblib
@@ -15,7 +16,9 @@ def load_model_bundle():
         )
     bundle = joblib.load(MODEL_FILE)
     if not all(years in bundle.get("models", {}) for years in (1, 5, 10)):
-        raise ValueError("Het modelbestand bevat niet alle drie uitkomsten (1, 5 en 10 jaar).")
+        raise ValueError(
+            "Het modelbestand bevat niet alle drie uitkomsten (1, 5 en 10 jaar)."
+        )
     return bundle
 
 
@@ -23,7 +26,12 @@ def predict_all(bundle, values):
     schema = bundle["schema"]
     # Onbekende waarden (None) moeten als NaN binnenkomen, anders worden ze niet geïmputeerd.
     row = pd.DataFrame(
-        [{column: np.nan if values.get(column) is None else values.get(column) for column in schema["columns"]}],
+        [
+            {
+                column: np.nan if values.get(column) is None else values.get(column)
+                for column in schema["columns"]
+            }
+        ],
         columns=schema["columns"],
     )
     results = {}
@@ -32,5 +40,8 @@ def predict_all(bundle, values):
         if 1 not in classes:
             raise ValueError(f"Model voor {years} jaar kent geen overlevingsklasse.")
         probability = float(model.predict_proba(row)[0][classes.index(1)])
-        results[int(years)] = {"survival_probability": probability, "survives": probability >= 0.5}
+        results[int(years)] = {
+            "survival_probability": probability,
+            "survives": probability >= 0.5,
+        }
     return results
