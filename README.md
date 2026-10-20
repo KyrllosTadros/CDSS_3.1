@@ -12,7 +12,7 @@ python train_model.py
 python -m streamlit run app.py
 ```
 
-`train_model.py` kiest eerst data-gedreven de voorspellers (zie hieronder), traint daarna de drie modellen en schrijft `survival_models.joblib` met de modellen, het invoerschema en de selectieresultaten. Het script schrijft ook `feature_selection_report.csv` met per kenmerk de screening-, lasso- en importance-scores. Train opnieuw na wijzigingen aan de dataset of modelcode. De joblib hangt af van de scikit-learn-versie; train opnieuw als je die wijzigt.
+`train_model.py` kiest eerst data-gedreven de voorspellers (zie hieronder), traint daarna de drie modellen en schrijft `survival_models.joblib` met de modellen en het invoerschema. De tussenresultaten van elke selectiestap worden tijdens het trainen in de terminal getoond. Train opnieuw na wijzigingen aan de dataset of modelcode. De joblib hangt af van de scikit-learn-versie; train opnieuw als je die wijzigt.
 
 ## Kenmerkselectie
 

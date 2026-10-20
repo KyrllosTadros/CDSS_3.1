@@ -10,7 +10,7 @@ def _connect():
     if not DB_FILE.exists():
         raise FileNotFoundError("ehr.db ontbreekt. Maak de database met: python setup_database.py")
     conn = sqlite3.connect(DB_FILE)
-    conn.row_factory = sqlite3.Row
+    conn.row_factory = sqlite3.Row  # rijen als dictionary-achtig object (kolomnaam -> waarde)
     return conn
 
 

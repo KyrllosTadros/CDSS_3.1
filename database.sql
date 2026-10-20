@@ -55,7 +55,7 @@ CREATE TABLE patient (
 INSERT INTO patient
   (display_name, leeft, gesl, tumsoort, diag_basis, topo_sublok, later, morf, gedrag, diffgrad, cstadium, pstadium, ond_lymf, pos_lymf, er_stat, pr_stat, her2_stat, dcis_comp, multifoc, tum_afm, swk, okd, org_chir, uitgebr_chir_code, dir_reconstr, chemo, target, horm, rt, meta_rt, meta_chir)
 VALUES
-  ('Anna de Vries', 54, 2, 501300, 7, 'C504', 2, 8500, 3, 2, '1A', '1A', 7, 0, 1, 1, 0, 0, 0, 12, 1, 0, 1, '131C50', 0, 0, 0, 2, 2, 0, 1),
+  ('Anna de Vries', 40, 2, 501300, 7, 'C504', 2, 8500, 3, 2, '1A', '1A', 7, 0, 1, 1, 0, 0, 0, 12, 1, 0, 1, '131C50', 0, 0, 0, 2, 2, 0, 1),
   ('Fatima El Amrani', 46, 2, 501300, 7, 'C502', 2, 8500, 3, 3, '2B', '1A', 0, 0, 0, 0, 0, 1, 0, 28, 1, 0, 1, '131C50', 0, 2, 4, 0, 2, 0, 0),
   ('Joke van den Berg', 72, 2, 502200, 7, 'C502', 2, 8500, 2, NULL, '0', '0', 8, 1, NULL, NULL, NULL, NULL, 0, 70, 1, 1, 1, '141C50', 0, 0, 1, 0, 0, 0, 0),
   ('Maria Santos', 61, 2, 501300, 7, 'C501', 1, 8500, 3, 3, '3A', '3A', 12, 9, 1, 0, 1, NULL, 0, 88, NULL, 1, 1, '142C50', 0, 2, 2, 2, 0, 0, 0),
