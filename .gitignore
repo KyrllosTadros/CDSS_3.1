@@ -184,5 +184,4 @@ cython_debug/
 *.csv
 
 # Lokale getrainde modellen
-*.joblib
 *.keras
